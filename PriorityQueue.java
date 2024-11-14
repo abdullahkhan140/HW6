@@ -150,10 +150,10 @@ class PriorityQueue<E, P> {
      */
 
     public Node add(E e, P priority) {
-       Node newNode = new Node(e, priority, heap.size());
-       heap.add(newNode);  // Add the new node at the end of the heap (array)
+       Node newNode = new Node(e, priority, tree.size());
+       tree.add(newNode);  // Add the new node at the end of the heap (array)
         // Move the new node up to its correct position in the heap.
-       pullUp(heap.size() - 1);
+       pullUp(tree.size() - 1);
         // Return the Node object
        return newNode;
     }
