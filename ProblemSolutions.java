@@ -64,11 +64,13 @@ public class ProblemSolutions {
      */
 
   public static int lastBoulder(int[] boulders) {
-        PriorityQueue<Integer> boulderQueue = new PriorityQueue<>(Collections.reverseOrder()); // create boulderQueue to get heavy boulder first
+      PriorityQueue<Integer> boulderQueue = new PriorityQueue<>(Collections.reverseOrder()); // create boulderQueue to get heavy boulder first
+
       // Add boulders to heap
       for (int b : boulders) {
           boulderQueue.add(b);
       }
+
       // Smash until one or no boulders remain
       while (boulderQueue.size() > 1) {
           int b1 = boulderQueue.poll(); // Heaviest boulder
@@ -78,6 +80,7 @@ public class ProblemSolutions {
               boulderQueue.add(b1 - b2); // Put the result back
           }
       }
+
       return boulderQueue.isEmpty() ? 0 : boulderQueue.peek(); // Return the last boulder or 0
   }
     
@@ -99,24 +102,32 @@ public class ProblemSolutions {
      */
 
     public static ArrayList<String> showDuplicates(ArrayList<String> input) {
- // Count occurrences of each string in input list
-            Map<String, Integer> countUniqueString = new HashMap<>();
-            for (String s : input) {
-                countUniqueString.put(s, countUniqueString.getOrDefault(s, 0) + 1);
+ Map<String, Integer> countUniqueString = new HashMap<>();
+        // Loop through each string in the input list
+        for (String s : input) {
+            if (countUniqueString.containsKey(s)) {
+                // If the string already exists in the map, increment its count by 1
+                countUniqueString.put(s, countUniqueString.get(s) + 1);
+            } else {
+                // If the string does not exist in the map, add it with a count of 1
+                countUniqueString.put(s, 1);
             }
-
-            // Find duplicates
-            ArrayList<String> duplicates = new ArrayList<>();
-            for (String s : countUniqueString.keySet()) {
-                if (countUniqueString.get(s) > 1) {
-                    duplicates.add(s);
-                }
-            }
-
-            // Sort and return in ascending order
-            Collections.sort(duplicates);
-            return duplicates; // return list of duplicates
         }
+       // Create a list to store strings that appear more than once
+        ArrayList<String> duplicates = new ArrayList<>();
+       // Loop through the strings
+        for (String s : countUniqueString.keySet()) {
+            // If the string appears more than once, add it to the duplicates list
+            if (countUniqueString.get(s) > 1) {
+                duplicates.add(s);
+            }
+        }
+    // Sort the  list in ascending order
+        Collections.sort(duplicates);
+
+    // Return the list
+        return duplicates;
+    }
     /**
      * Finds pairs in the input array that add up to k.
      *
@@ -148,17 +159,17 @@ public class ProblemSolutions {
      */
 
     public static ArrayList<String> pair(int[] input, int k) {
-      Set<Integer> seen = new HashSet<>();
+       Set<Integer> seen = new HashSet<>();
         Set<String> resultSet = new HashSet<>(); // Use a set to avoid duplicate pairs
 
         // Traverse the input array
         for (int n : input) {
-            int complement = k - n;  // Find the complement to form a pair
+            int otherNumber = k - n;  // Find the complement to form a pair
 
             // If the complement exists, add the pair in the result set
-            if (seen.contains(complement)) {
+            if (seen.contains(otherNumber)) {
                 // Make sure the pair is ordered as (min, max)
-                String pair = "(" + Math.min(n, complement) + ", " + Math.max(n, complement) + ")";
+                String pair = "(" + Math.min(n, otherNumber) + ", " + Math.max(n, otherNumber) + ")";
                 resultSet.add(pair);
             }
             // Add the current number to the seen set
