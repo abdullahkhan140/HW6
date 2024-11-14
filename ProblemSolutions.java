@@ -159,7 +159,7 @@ public class ProblemSolutions {
      */
 
     public static ArrayList<String> pair(int[] input, int k) {
-       Set<Integer> seen = new HashSet<>();
+       Set<Integer> tree = new HashSet<>();
         Set<String> resultSet = new HashSet<>(); // Use a set to avoid duplicate pairs
 
         // Traverse the input array
@@ -167,13 +167,13 @@ public class ProblemSolutions {
             int otherNumber = k - n;  // Find the complement to form a pair
 
             // If the complement exists, add the pair in the result set
-            if (seen.contains(otherNumber)) {
+            if (tree.contains(otherNumber)) {
                 // Make sure the pair is ordered as (min, max)
                 String pair = "(" + Math.min(n, otherNumber) + ", " + Math.max(n, otherNumber) + ")";
                 resultSet.add(pair);
             }
             // Add the current number to the seen set
-            seen.add(n);
+            tree.add(n);
         }
         ArrayList<String> result = new ArrayList<>(resultSet);
         Collections.sort(result); // Sort the pairs alphabetically
