@@ -1,7 +1,7 @@
 
 /******************************************************************
  *
- *   YOUR NAME / SECTION NUMBER
+ *   Abdullah I Khan Section 002
  *
  *   This java file contains the problem solutions for the methods lastBoulder,
  *   showDuplicates, and pair methods. You should utilize the Java Collection
@@ -64,14 +64,23 @@ public class ProblemSolutions {
      */
 
   public static int lastBoulder(int[] boulders) {
+        PriorityQueue<Integer> boulderQueue = new PriorityQueue<>(Collections.reverseOrder()); // create boulderQueue to get heavy boulder first
+      // Add boulders to heap
+      for (int b : boulders) {
+          boulderQueue.add(b);
+      }
+      // Smash until one or no boulders remain
+      while (boulderQueue.size() > 1) {
+          int b1 = boulderQueue.poll(); // Heaviest boulder
+          int b2 = boulderQueue.poll(); // Second heaviest boulder
 
-      //
-      // ADD YOUR CODE HERE - DO NOT FORGET TO ADD YOUR NAME / SECTION # ABOVE
-      //
-      return -1;
+          if (b1 != b2) {
+              boulderQueue.add(b1 - b2); // Put the result back
+          }
+      }
+      return boulderQueue.isEmpty() ? 0 : boulderQueue.peek(); // Return the last boulder or 0
   }
-
-
+    
     /**
      * Method showDuplicates
      *
@@ -90,15 +99,24 @@ public class ProblemSolutions {
      */
 
     public static ArrayList<String> showDuplicates(ArrayList<String> input) {
+ // Count occurrences of each string in input list
+            Map<String, Integer> countUniqueString = new HashMap<>();
+            for (String s : input) {
+                countUniqueString.put(s, countUniqueString.getOrDefault(s, 0) + 1);
+            }
 
-        //
-        //  YOUR CODE GOES HERE
-        //
-        return new ArrayList<>();  // Make sure result is sorted in ascending order
+            // Find duplicates
+            ArrayList<String> duplicates = new ArrayList<>();
+            for (String s : countUniqueString.keySet()) {
+                if (countUniqueString.get(s) > 1) {
+                    duplicates.add(s);
+                }
+            }
 
-    }
-
-
+            // Sort and return in ascending order
+            Collections.sort(duplicates);
+            return duplicates; // return list of duplicates
+        }
     /**
      * Finds pairs in the input array that add up to k.
      *
@@ -130,10 +148,25 @@ public class ProblemSolutions {
      */
 
     public static ArrayList<String> pair(int[] input, int k) {
+      Set<Integer> seen = new HashSet<>();
+        Set<String> resultSet = new HashSet<>(); // Use a set to avoid duplicate pairs
 
-        //
-        //  YOUR CODE GOES HERE
-        //
-        return new ArrayList<>();  // Make sure returned lists is sorted as indicated above
+        // Traverse the input array
+        for (int n : input) {
+            int complement = k - n;  // Find the complement to form a pair
+
+            // If the complement exists, add the pair in the result set
+            if (seen.contains(complement)) {
+                // Make sure the pair is ordered as (min, max)
+                String pair = "(" + Math.min(n, complement) + ", " + Math.max(n, complement) + ")";
+                resultSet.add(pair);
+            }
+            // Add the current number to the seen set
+            seen.add(n);
+        }
+        ArrayList<String> result = new ArrayList<>(resultSet);
+        Collections.sort(result); // Sort the pairs alphabetically
+
+        return result;
     }
 }
